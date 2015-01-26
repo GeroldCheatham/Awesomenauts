@@ -1,7 +1,7 @@
 game.PlayerEntity = me.Entity.extend({
     init: function(x, y, settings) {
         this._super(me.Entity, 'init', [x, y, {
-                image: "player",
+                image: 64,
                 width: 64,
                 height: 64,
                 spritewidth: "64",
@@ -11,20 +11,19 @@ game.PlayerEntity = me.Entity.extend({
                 }
         }]);
     
-        this.body.setVelocity(5, 20);
+        this.body.setVelocity(5, 0);
     
     },
     
-    update: function(delta) {
+    update: function() {
         if(me.input.isKeyPressed("right")){
             
             this.body.vel.x += this.body.accel.x * me.timer.tick;
-        }
-        else{
+        }else{
             this.body.vel.x = 0;
         }
         
         this.body.update(delta);
-        return true;
+        return true
     }
 });
