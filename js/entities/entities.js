@@ -12,6 +12,8 @@ game.PlayerEntity = me.Entity.extend({
         }]);
     
         this.body.setVelocity(5, 20);
+        
+        this.renderable.addAnimation("walk", [117]);
     
     },
     
@@ -19,6 +21,11 @@ game.PlayerEntity = me.Entity.extend({
         if(me.input.isKeyPressed("right")){
             
             this.body.vel.x += this.body.accel.x * me.timer.tick;
+            this.flipX(true);
+        }
+        else if(me.input.isKeyPressed("left")){
+            this.body.vel.x -= this.body.accel.x * me.timer.tick;
+            this.flipX(false);
         }
         else{
             this.body.vel.x = 0;
