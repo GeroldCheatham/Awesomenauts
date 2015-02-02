@@ -16,7 +16,8 @@ game.PlayerEntity = me.Entity.extend({
         
         this.renderable.addAnimation("idle", [78]);
         this.renderable.addAnimation("walk", [117, 118, 119,120, 121, 122, 123, 124, 125], 80);
-    
+        this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 70, 71, 72], 80);
+        
         this.renderable.setCurrentAnimation("idle");
     
     },
@@ -35,17 +36,28 @@ game.PlayerEntity = me.Entity.extend({
         else{
             this.body.vel.x = 0;
         }
+        if(me.input.isKeyPressed("up") && !this.jumping && !this.falling){
+            this.jumping = true;
+            this.body.vel.y -= this.body.accel.y * me.timer.tick;
+            this.jumping = false;
+        }
         
-        if(this.body.vel.x !== 0){
+                if(me.input.isKeyPressed("attack")){
+            if(!this.renderable.isCurrentAnimation("attack")){
+                this.renderable.setCurrentAnimation("attack", "idle");
+                this.renderable.setAnimationFrame();
+            }
+        }        
+        else if(this.body.vel.x !== 0){
         if(!this.renderable.isCurrentAnimation("walk")){
             this.renderable.setCurrentAnimation("walk");
         
           }
-        }else{
+        }else if(!this.renderable.isCurrentAnimation("attack")){
             this.renderable.setCurrentAnimation("idle");
         }
         
-        
+
         
         this.body.update(delta);
         
@@ -63,7 +75,7 @@ game.PlayerBaseEntity = me.Entity.extend({
                 spritewidth: "100",
                 spriteheight: "100",
                 getShape: function(){
-                    return (new me.Rect(0, 0, 100, 100)).toPolygon();
+                    return (new me.Rect(0, 0, 100, 70)).toPolygon();
                 }
         }]);
     this.broken = false;
@@ -104,7 +116,7 @@ game.EnemyBaseEntity = me.Entity.extend({
                 spritewidth: "100",
                 spriteheight: "100",
                 getShape: function(){
-                    return (new me.Rect(0, 0, 100, 100)).toPolygon();
+                    return (new me.Rect(0, 0, 100, 70)).toPolygon();
                 }
         }]);
     this.broken = false;
